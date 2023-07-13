@@ -5,7 +5,6 @@ node {
     }
 
     stage('Build') {
-        sh 'python -m py_compile sources/add2vals.py sources/calc.py'
-        stash(name: 'compiled-results', includes: 'sources/*.py*')
+        readFile encoding: 'Base64', file: './sources/calc.py'
     }
 }
