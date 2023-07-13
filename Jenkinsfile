@@ -5,6 +5,6 @@ node {
     }
 
     stage('Build') {
-        readFile encoding: 'Base64', file: './sources/calc.py'
+        step([$class: 'GitHubSetCommitStatusBuilder', statusMessage: [content: 'Running github property check in build stage.']])    
     }
 }
