@@ -7,4 +7,8 @@ node {
     stage('Build') {
         step([$class: 'GitHubSetCommitStatusBuilder', statusMessage: [content: 'Running github property check in build stage.']])    
     }
+
+    stage('Test') {
+        fileExists './sources/calc.py'
+    }
 }
