@@ -15,6 +15,7 @@ pipeline {
                 stash(name: 'compiled-results', includes: 'sources/*.py*')
             }
         }
+
         stage('Test') {
             agent {
                 docker {
@@ -30,7 +31,15 @@ pipeline {
                 }
             }
         }
-        stage('Deliver') { 
+
+        stage('Manual Approval') {
+            agent any
+            steps {
+                input message: 'Sudah selesai menggunakan React App? (Klik "Proceed" untuk mengakhiri)' 
+            }
+        }
+
+        stage('Deploy') { 
             agent any
             environment { 
                 VOLUME = '$(pwd)/sources:/src'
@@ -40,6 +49,7 @@ pipeline {
                 dir(path: env.BUILD_ID) { 
                     unstash(name: 'compiled-results') 
                     sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'" 
+                    sleep(time: 1, unit: 'MINUTES')
                 }
             }
             post {
