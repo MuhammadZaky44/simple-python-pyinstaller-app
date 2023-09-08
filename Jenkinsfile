@@ -32,12 +32,12 @@ pipeline {
             }
         }
 
-        stage('Manual Approval') {
-            agent any
-            steps {
-                input message: 'Sudah selesai menggunakan React App? (Klik "Proceed" untuk mengakhiri)' 
-            }
-        }
+        // stage('Manual Approval') {
+        //     agent any
+        //     steps {
+        //         input message: 'Sudah selesai menggunakan React App? (Klik "Proceed" untuk mengakhiri)' 
+        //     }
+        // }
 
         stage('Deploy') { 
             agent any
@@ -49,7 +49,7 @@ pipeline {
                 dir(path: env.BUILD_ID) { 
                     unstash(name: 'compiled-results') 
                     sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'" 
-                    sleep(time: 1, unit: 'MINUTES')
+                    // sleep(time: 1, unit: 'MINUTES')
                 }
             }
         }
